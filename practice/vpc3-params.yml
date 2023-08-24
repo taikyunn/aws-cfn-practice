@@ -1,0 +1,5 @@
+[
+  { "ParameterKey" : "VPCRange", "ParameterValue" : "172.24.0.0/16" },
+  { "ParameterKey" : "SubnetRange1", "ParameterValue" : "172.24.0.0/24" },
+  { "ParameterKey" : "SubnetRange2", "ParameterValue" : "172.24.1.0/24" }
+]
