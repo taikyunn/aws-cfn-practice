@@ -1,0 +1,19 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: SSM Parameter Create
+Parameters:
+  MasterUserName:
+    Type: String
+    NoEcho: true
+    MinLength: 1
+    MaxLength: 16
+    AllowedPattern: "[a-zA-Z][a-zA-Z0-9]*"
+    ConstraintDescription: "must begin with a letter and contain only alphanumeric characters."
+
+Resources:
+  ParameterStorePractice:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: Cfn register test
+      Name: MasterUserName
+      Type: String
+      Value: !Ref MasterUserName

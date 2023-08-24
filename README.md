@@ -27,3 +27,8 @@ aws cloudformation delete-stack --stack-name stack-name
 (例)
 aws cloudformation delete-stack --stack-name aws-cli-test
 ```
+
+5. ParameterStore登録コマンド
+```
+aws ssm put-parameter --name MasterUsername --type String --value "MasterUsername"
+```
