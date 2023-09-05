@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Condition practice
+Parameters:
+  NeedSSMAccess:
+    Type: String
+    AllowedValues: [true, false]
+
+Conditions:
+  NeedSSMCreate: !Equals [true, !Ref NeedSSMAccess]
+
+# SSMのvalueをNeedSSMAccessの値で制御
+Resources:
+  ParameterStorePractice:
+    Condition: NeedSSMCreate
+    Type: AWS::SSM::Parameter
+    Properties:
+      Description: Cfn register test
+      Name: key
+      Type: String
+      Value: "test"
+
