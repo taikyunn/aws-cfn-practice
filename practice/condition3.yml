@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Condition practice
+Parameters:
+  NeedSSMAccess:
+    Type: String
+    AllowedValues: [true, false]
+    Default: true
+
+Conditions:
+  NeedSSMCreate: !Equals [true, !Ref NeedSSMAccess]
+
+# SSMのvalueをNeedSSMAccessの値で制御
+Resources:
+  ParameterStorePractice:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: key
+      Type: String
+      Value: "test"
+      Tags:
+        Fn::If:
+          - NeedSSMCreate
+          - Name: test value
+          - !Ref AWS::NoValue
+
