@@ -1,0 +1,55 @@
+# vpc+public Subnetを一つ
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  TestVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: 'true'
+      EnableDnsSupport: 'true'
+      Tags:
+        - Key: Name
+          Value: TestVPC
+  TestIGW:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: test-igw
+  AttachGW:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref TestVPC
+      InternetGatewayId: !Ref TestIGW
+  RouteTable1a:
+    Type: AWS::EC2::RouteTable
+    # GatewayAttachment完了後に実行する
+    DependsOn: AttachGW
+    Properties:
+      VpcId: !Ref TestVPC
+      Tags:
+      - Key: Name
+        Value: test-public-1a-rt
+  Route:
+    Type: AWS::EC2::Route
+    DependsOn: AttachGW
+    Properties:
+      RouteTableId: !Ref RouteTable1a
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref TestIGW
+  Subnet1a:
+    Type: AWS::EC2::Subnet
+    DependsOn: AttachGW
+    Properties:
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: 'false'
+      VpcId: !Ref TestVPC
+      AvailabilityZone : ap-northeast-1a
+      Tags:
+      - Key: Name
+        Value: test-public-subnet-1a
+  RouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref Subnet1a
+      RouteTableId: !Ref RouteTable1a

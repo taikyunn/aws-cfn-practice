@@ -1,0 +1,33 @@
+# parameterを使用してVPCを作成する
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  EC2VPC1:
+    Type: 'AWS::EC2::VPC'
+    Properties:
+      CidrBlock: !Ref VPCRange
+  EC2Subnet1:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref EC2VPC1
+      CidrBlock: !Ref SubnetRange1
+      Tags:
+        - Key: "Name"
+          Value: "CloudFormation  change set"
+  EC2Subnet2:
+    Type: 'AWS::EC2::Subnet'
+    Properties:
+      VpcId: !Ref EC2VPC1
+      CidrBlock: !Ref SubnetRange2
+      Tags:
+        - Key: "Name"
+          Value: "CloudFormation change set"
+Parameters:
+  VPCRange:
+    Type: String
+    Description: "VPC Subnet Range"
+  SubnetRange1:
+    Type: String
+    Description: "Subnet Range1"
+  SubnetRange2:
+    Type: String
+    Description: "Subnet Range2"
